@@ -31,7 +31,8 @@
     "plugins": [
       "expo-router",
       "expo-asset",
-      "expo-dev-launcher"
+      "expo-dev-launcher",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
