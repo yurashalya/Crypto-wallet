@@ -1,7 +1,7 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import "react-native-reanimated";
 import { useFonts } from "expo-font";
-import { Link, Stack, useRouter } from "expo-router";
+import { Link, Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
@@ -38,6 +38,7 @@ SplashScreen.preventAutoHideAsync();
 
 const InitialLayout = () => {
   const router = useRouter();
+  const segments = useSegments();
   const { isLoaded, isSignedIn } = useAuth();
 
   const [loaded, error] = useFonts({
@@ -57,10 +58,17 @@ const InitialLayout = () => {
 
   useEffect(() => {
     if (!isLoaded) return;
-    console.log("isSignedIn", isSignedIn);
+
+    const inAuthGroup = segments[0] === "(authenticated)";
+
+    if (isSignedIn && !inAuthGroup) {
+      router.replace("/(authenticated)/(tabs)/home");
+    } else if (!isSignedIn) {
+      router.replace("/");
+    }
   }, [isSignedIn]);
 
-  if (!loaded) {
+  if (!loaded || !isLoaded) {
     return null;
   }
 
@@ -129,6 +137,11 @@ const InitialLayout = () => {
             </TouchableOpacity>
           ),
         }}
+      />
+
+      <Stack.Screen
+        name="(authenticated)/(tabs)"
+        options={{ headerShown: false }}
       />
     </Stack>
   );
