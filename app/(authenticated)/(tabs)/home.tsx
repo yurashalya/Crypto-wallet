@@ -9,7 +9,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "@/constants/Colors";
-
+import WidgetList from "@/components/SortableList/WidgetList";
 import RoundButton from "@/components/RoundButton";
 import Dropdown from "@/components/Dropdown";
 import { useWalletStore } from "@/store/walletStore";
@@ -76,6 +76,7 @@ const Home = () => {
       </View>
 
       <Text style={styles.sectionHeader}>Widgets</Text>
+      <WidgetList />
     </ScrollView>
   );
 };
