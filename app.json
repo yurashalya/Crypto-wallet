@@ -25,10 +25,16 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-router",
+        {
+           "origin": "https://evanbacon.dev/"
+        }
+      ],
       "expo-router",
       "expo-asset",
       "expo-dev-launcher",

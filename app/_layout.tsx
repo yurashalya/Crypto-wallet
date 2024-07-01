@@ -7,10 +7,13 @@ import { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import * as SecureStore from "expo-secure-store";
 
 import Colors from "@/constants/Colors";
+
+const queryClient = new QueryClient();
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -62,7 +65,7 @@ const InitialLayout = () => {
     const inAuthGroup = segments[0] === "(authenticated)";
 
     if (isSignedIn && !inAuthGroup) {
-      router.replace("/(authenticated)/(tabs)/home");
+      router.replace("/(authenticated)/(tabs)/crypto");
     } else if (!isSignedIn) {
       router.replace("/");
     }
@@ -153,8 +156,10 @@ const RootLayoutNav = () => {
       publishableKey={CLERK_PUBLISHABLE_KEY}
       tokenCache={tokenCache}
     >
-      <StatusBar style="light" />
-      <InitialLayout />
+      <QueryClientProvider client={queryClient}>
+        <StatusBar style="light" />
+        <InitialLayout />
+      </QueryClientProvider>
     </ClerkProvider>
   );
 };
