@@ -7,6 +7,7 @@ import {
   Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 import Colors from "@/constants/Colors";
 import WidgetList from "@/components/SortableList/WidgetList";
@@ -15,6 +16,8 @@ import Dropdown from "@/components/Dropdown";
 import { useWalletStore } from "@/store/walletStore";
 
 const Home = () => {
+  const headerHeight = useHeaderHeight();
+
   const { wallet, runTransaction, transactions, clearTransactions } =
     useWalletStore();
 
@@ -28,7 +31,10 @@ const Home = () => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: Colors.background }}>
+    <ScrollView
+      style={{ backgroundColor: Colors.background }}
+      contentContainerStyle={{ paddingTop: headerHeight, paddingBottom: 70 }}
+    >
       <View style={styles.account}>
         <View style={styles.row}>
           <Text style={styles.balance}>{wallet()}</Text>
