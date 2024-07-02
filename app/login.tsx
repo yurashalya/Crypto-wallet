@@ -55,7 +55,6 @@ const RegistrationPage = () => {
           params: { phone: fullPhoneNumber, signin: "true" },
         });
       } catch (err) {
-        console.log("error", JSON.stringify(err, null, 2));
         if (isClerkAPIResponseError(err)) {
           if (err.errors[0].code === "form_identifier_not_found") {
             Alert.alert("Error", err.errors[0].message);

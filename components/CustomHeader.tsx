@@ -1,20 +1,25 @@
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, StyleSheet } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native";
+import { TextInput, TouchableOpacity, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { Link } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
 
 const CustomHeader = () => {
+  const { user } = useUser();
   const { top } = useSafeAreaInsets();
-
   return (
     <BlurView intensity={100} tint={"extraLight"} style={{ paddingTop: top }}>
       <View style={styles.container}>
         <Link href={"/(authenticated)/(modals)/account"} asChild>
-          <TouchableOpacity style={styles.logo}>
-            <Text style={styles.emptyLogo}>SG</Text>
+          <TouchableOpacity style={styles.logoContainer}>
+            {user?.imageUrl ? (
+              <Image source={{ uri: user?.imageUrl }} style={styles.logo} />
+            ) : (
+              <Text style={styles.emptyLogo}>SG"</Text>
+            )}
           </TouchableOpacity>
         </Link>
         <View style={styles.searchSection}>
@@ -51,7 +56,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "transparent",
   },
-  logo: {
+  logoContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -59,8 +64,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  logo: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
   emptyLogo: {
-    color: "#fff",
+    color: Colors.white,
     fontWeight: "500",
     fontSize: 16,
   },
