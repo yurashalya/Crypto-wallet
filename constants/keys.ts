@@ -4,3 +4,5 @@ export const PATH_KEYS = {
   signup: "/signup",
   help: "/help",
 };
+
+export const Categories = ["Overview", "News", "Orders", "Transactions"];

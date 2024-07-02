@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
-type useCryptoInfoQueryProps = {
+type useGetCoinsQueryProps = {
   ids?: string;
 };
 
-export const useCryptoInfoQuery = ({ ids }: useCryptoInfoQueryProps) =>
+export const useGetCoinsQuery = ({ ids }: useGetCoinsQueryProps) =>
   useQuery({
     queryKey: ["info", ids],
     queryFn: async () => {

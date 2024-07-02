@@ -11,7 +11,7 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { Link } from "expo-router";
 
 import { useCurrenciesQuery } from "@/queries/useGetCurrenciesQuery";
-import { useCryptoInfoQuery } from "@/queries/useGetCryptoInfoQuery";
+import { useGetCoinsQuery } from "@/queries/useGetCoinsQuery";
 
 import { defaultStyles } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
@@ -27,7 +27,7 @@ const Crypto = () => {
   const ids = currencies?.map((currency: Currency) => currency.id).join(",");
 
   const { data: cryptoInfo, isFetching: isFetchingCryptoInfo } =
-    useCryptoInfoQuery({ ids });
+    useGetCoinsQuery({ ids });
 
   return (
     <ScrollView
