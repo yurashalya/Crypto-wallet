@@ -4,12 +4,14 @@ import { useFonts } from "expo-font";
 import { Link, Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import * as SecureStore from "expo-secure-store";
+
+import { UserInactivityProvider } from "@/context/userActivity";
 
 import Colors from "@/constants/Colors";
 
@@ -42,6 +44,7 @@ SplashScreen.preventAutoHideAsync();
 const InitialLayout = () => {
   const router = useRouter();
   const segments = useSegments();
+
   const { isLoaded, isSignedIn } = useAuth();
 
   const [loaded, error] = useFonts({
@@ -65,14 +68,18 @@ const InitialLayout = () => {
     const inAuthGroup = segments[0] === "(authenticated)";
 
     if (isSignedIn && !inAuthGroup) {
-      router.replace("/(authenticated)/(tabs)/crypto");
+      router.replace("/(authenticated)/(tabs)/home");
     } else if (!isSignedIn) {
       router.replace("/");
     }
   }, [isSignedIn]);
 
   if (!loaded || !isLoaded) {
-    return null;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
   }
 
   return (
@@ -173,6 +180,10 @@ const InitialLayout = () => {
           ),
         }}
       />
+      <Stack.Screen
+        name="(authenticated)/(modals)/lock"
+        options={{ headerShown: false, animation: "none" }}
+      />
     </Stack>
   );
 };
@@ -184,8 +195,10 @@ const RootLayoutNav = () => {
       tokenCache={tokenCache}
     >
       <QueryClientProvider client={queryClient}>
-        <StatusBar style="light" />
-        <InitialLayout />
+        <UserInactivityProvider>
+          <StatusBar style="light" />
+          <InitialLayout />
+        </UserInactivityProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );
